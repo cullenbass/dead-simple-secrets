@@ -19,3 +19,9 @@
 
 # Go workspace file
 go.work
+
+dead-simple-server
+dss
+*.secret
+*.db
+*.sqlite

@@ -1,0 +1,22 @@
+# Example configuration file
+# This file can be split up how you like as long as the files end in *.toml
+
+# global is reserved for permission sets across both explicit clients and anonymous clients
+[global]
+read = []
+write = []
+
+# Specific clients are defined in this file by name
+[server1]
+# Key is used by passing as an HTTP header: X-API-Key
+key = "SecretKeyHere"
+# Read grants read permissions to specific paths of keys
+read = ["aws/*", "slack/api_token"]
+# Write grants write permissions to paths of keys 
+write = ["server2/*"]
+
+# this key can only read or write it's own secrets
+[server2]
+key = "SecondSecretKey"
+read = []
+write = []
