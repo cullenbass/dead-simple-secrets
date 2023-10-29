@@ -5,18 +5,22 @@
 [global]
 read = []
 write = []
+# main encryption key. Not recommended to be put here, but why not offer the convenience? 
+key = ""
+# custom salt for main key
+salt = ""
 
 # Specific clients are defined in this file by name
 [server1]
-# Key is used by passing as an HTTP header: X-API-Key
-key = "SecretKeyHere"
-# Read grants read permissions to specific paths of keys
+# Token is used by passing as an HTTP header: X-API-Key
+token = "SecretKeyHere"
+# Read grants read permissions to specific paths of secret
 read = ["aws/*", "slack/api_token"]
-# Write grants write permissions to paths of keys 
+# Write grants write permissions to paths of secret
 write = ["server2/*"]
 
-# this key can only read or write it's own secrets
+# this token can only read or write its own secrets
 [server2]
-key = "SecondSecretKey"
+token = "SecondSecretKey"
 read = []
 write = []

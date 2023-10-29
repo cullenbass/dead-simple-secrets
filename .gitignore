@@ -25,3 +25,4 @@ dss
 *.secret
 *.db
 *.sqlite
+*.sqlite-journal
