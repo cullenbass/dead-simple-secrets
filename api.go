@@ -4,23 +4,22 @@ import (
 	"log/slog"
 	"net/http"
 	"strings"
-	"github.com/gorilla/mux"
 )
 
 func (s *ApiServer) registerHandlers() {
 	s.router.HandleFunc("/", root)
-	s.router.HandleFunc("/secret/{secretId}", readSecret).Methods("GET")
-	s.router.HandleFunc("/secret/{secretId}", writeSecret).Methods("POST")
-	s.router.HandleFunc("/secret/{secretId}", deleteSecret).Methods("DELETE")
+	s.router.HandleFunc("GET /secret/{secretId}", readSecret)
+	s.router.HandleFunc("POST /secret/{secretId}", writeSecret)
+	s.router.HandleFunc("DELETE /secret/{secretId}", deleteSecret)
 }
 
 type ApiServer struct {
-	router *mux.Router
+	router *http.ServeMux
 	server *http.Server
 }
 
 func NewServer() *ApiServer {
-	return &ApiServer{mux.NewRouter(), &http.Server{}}
+	return &ApiServer{http.NewServeMux(), &http.Server{}}
 }
 
 func root(w http.ResponseWriter, r *http.Request) {
