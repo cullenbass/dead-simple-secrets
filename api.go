@@ -7,36 +7,44 @@ import (
 )
 
 func (s *ApiServer) registerHandlers() {
-	s.router.HandleFunc("/", root)
-	s.router.HandleFunc("GET /secret/{secretId}", readSecret)
-	s.router.HandleFunc("POST /secret/{secretId}", writeSecret)
-	s.router.HandleFunc("DELETE /secret/{secretId}", deleteSecret)
+	s.router.HandleFunc("/", s.root)
+	s.router.HandleFunc("GET /secret/", s.readSecret)
+	s.router.HandleFunc("POST /secret/", s.writeSecret)
+	s.router.HandleFunc("DELETE /secret/", s.deleteSecret)
 }
 
 type ApiServer struct {
 	router *http.ServeMux
 	server *http.Server
+	config *Config
+	storage *Storage
 }
 
 func NewServer() *ApiServer {
-	return &ApiServer{http.NewServeMux(), &http.Server{}}
+	conf := InitConfig()
+	return &ApiServer{http.NewServeMux(), &http.Server{}, conf, InitStorage(conf)}
 }
 
-func root(w http.ResponseWriter, r *http.Request) {
+func (s *ApiServer) root(w http.ResponseWriter, r *http.Request) {
 	slog.Info("Hit root")
 	w.Write([]byte(nil))
 }
 
-func readSecret(w http.ResponseWriter, r *http.Request) {
+func (s *ApiServer) readSecret(w http.ResponseWriter, r *http.Request) {
+	path := trimPath(r.URL.Path)
+	s.storage.GetSecret(path, "a")
 	nyi(w)
 }
 
-func writeSecret(w http.ResponseWriter, r *http.Request) {
+func (s *ApiServer) writeSecret(w http.ResponseWriter, r *http.Request) {
+	path := trimPath(r.URL.Path)
+	s.storage.StoreSecret(path, []byte("a"), []byte("a"), "a")
 	nyi(w)
 }
 
-func deleteSecret(w http.ResponseWriter, r *http.Request) {
-	nyi(w)
+func (s *ApiServer) deleteSecret(w http.ResponseWriter, r *http.Request) {
+	path := trimPath(r.URL.Path)
+	s.storage.DeleteSecret(path, "a")
 }
 
 func (s ApiServer) StartServer() {

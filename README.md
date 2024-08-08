@@ -9,3 +9,4 @@ dead-simple-secrets (dss) is intended to be an incredible simple, yet useful, se
 
 ## Dependencies and Reasoning
 - [TOML parsing package](https://github.com/BurntSushi/toml)- ease of configuration
+- [SQLite3 package](https://github.com/mattn/go-sqlite3)- easy secret storage
