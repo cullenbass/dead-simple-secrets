@@ -7,6 +7,7 @@ import (
 )
 
 type Config struct {
+	// Write and Read are maps of map["owner"] = ["path1", "path2"...]
 	Write map[string][]string
 	WriteGlobal []string
 	Read map[string][]string
@@ -16,8 +17,12 @@ type Config struct {
 func InitConfig() *Config {
 	slog.Error("IMPLEMENT CONFIGS")
 	privs := make(map[string][]string)
-	privs["test"] = []string{"token", "token2"}
-	return &Config{Write:privs, WriteGlobal:[]string{"global"}, Read: privs, ReadGlobal: []string{"global"}}
+	privs["token"] = []string{"/testpath", "/testpath"}
+	return &Config{Write:privs, 
+		WriteGlobal:[]string{"/global/*"}, 
+		Read: privs, 
+		ReadGlobal: []string{"/global/*"},
+	}
 }
 
 func loadConfig() {

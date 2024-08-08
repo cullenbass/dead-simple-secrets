@@ -1,6 +1,9 @@
 # Example configuration file
 # This file can be split up how you like as long as the files end in *.toml
 
+# paths MUST include a wildcard if you want to share everything below them
+# eg: `/aws/*` allows access to `/aws/key` but not `/aws`
+
 # global is reserved for permission sets across both explicit clients and anonymous clients
 [global]
 read = []
