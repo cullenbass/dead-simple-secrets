@@ -15,9 +15,9 @@ func (s *ApiServer) registerHandlers() {
 }
 
 type ApiServer struct {
-	router *http.ServeMux
-	server *http.Server
-	config *Config
+	router  *http.ServeMux
+	server  *http.Server
+	config  *Config
 	storage *Storage
 }
 
@@ -30,7 +30,6 @@ func (s *ApiServer) root(w http.ResponseWriter, r *http.Request) {
 	slog.Info("Hit root")
 	w.Write([]byte(nil))
 }
-
 
 func (s *ApiServer) readSecret(w http.ResponseWriter, r *http.Request) {
 	token := r.Header.Get("X-Api-Key")
@@ -62,7 +61,7 @@ func (s *ApiServer) writeSecret(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(500)
 		w.Write([]byte("\"secret not written\""))
 	}
-	
+
 }
 
 func (s *ApiServer) deleteSecret(w http.ResponseWriter, r *http.Request) {
@@ -88,28 +87,28 @@ func (s ApiServer) StartServer() {
 	logRouter := http.NewServeMux()
 	logRouter.Handle("/", s.logHttpRequest(tokenRouter))
 	s.server = &http.Server{
-		Addr : ":" + "8080",
+		Addr:    ":" + "8080",
 		Handler: logRouter,
 	}
 	s.server.ListenAndServe()
 }
 
-func (s ApiServer) logHttpRequest(next http.Handler) (http.Handler) {
-	return http.HandlerFunc(func(w http.ResponseWriter, r * http.Request) {
+func (s ApiServer) logHttpRequest(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var remote string
 		if r.Header.Get("X-Forwarded-For") != "" {
 			remote = strings.Split(r.Header.Get("X-Forwarded-For"), ",")[0]
 		} else {
 			remote = strings.Split(r.RemoteAddr, ":")[0]
 		}
-		
-		slog.Info("", "RemoteAddr", remote, "Method" , r.Method, "Path" , r.URL.Path)
+
+		slog.Info("", "RemoteAddr", remote, "Method", r.Method, "Path", r.URL.Path)
 		next.ServeHTTP(w, r)
 	})
 }
 
-func (s * ApiServer) checkTokenExists(next http.Handler) (http.Handler) {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request){
+func (s *ApiServer) checkTokenExists(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token := r.Header.Get("X-Api-Key")
 		if token == "" {
 			w.WriteHeader(403)

@@ -5,7 +5,6 @@ import (
 	"strings"
 )
 
-
 func nyi(w http.ResponseWriter) {
 	w.WriteHeader(501)
 	w.Write([]byte("\"not yet implemented\""))
@@ -17,5 +16,5 @@ func se(w http.ResponseWriter) {
 }
 
 func trimPath(path string) string {
-	return strings.TrimPrefix(path,"/secret")
+	return strings.TrimPrefix(path, "/secret")
 }

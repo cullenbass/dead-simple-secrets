@@ -75,7 +75,7 @@ func (s *Storage) checkSecretExists(path string) (exists bool) {
 		} else {
 			slog.Error("Failed to query DB for path existence", "path", path)
 		}
-		
+
 		return false
 	}
 	return
@@ -104,7 +104,7 @@ func (s *Storage) checkOwnerSecret(path string, token string) bool {
 			return false
 		}
 		slog.Error("Failed to query DB for owner owning secret", "path", path, "err", err)
-		
+
 	}
 	if owner == token {
 		slog.Debug("Path owned by token", "path", path, "token", token)
@@ -123,13 +123,13 @@ func (s *Storage) checkWritePrivs(path string, token string) bool {
 		if configToken == token {
 			ok := checkPrivsConfig(path, configPaths)
 			if ok {
-				slog.Debug("Token can write to path via config", "token", token, "path" , path)
+				slog.Debug("Token can write to path via config", "token", token, "path", path)
 				return true
 			}
 		}
 	}
 	if checkPrivsConfig(path, s.config.WriteGlobal) && !s.checkSecretExists(path) {
-		slog.Debug("Token can write to path via global config", "token", token , "path", path)
+		slog.Debug("Token can write to path via global config", "token", token, "path", path)
 		return true
 	}
 	return false

@@ -14,6 +14,6 @@ func main() {
 	s := NewServer()
 	defer s.storage.Cleanup()
 	go s.StartServer()
-	<- sig
+	<-sig
 	slog.Info("Closing, please wait...")
 }
